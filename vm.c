@@ -17,10 +17,16 @@ char bit_check(uint16_t val, char bit) {
     return (val & (1 << bit)) > 0;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+
+    // Check if file is given
+    if (argc < 2) {
+        printf("Usage: %s <FILE>\n", argv[0]);
+        return 0;
+    }
 
     // Load ROM from file
-    char filename[] = "program";
+    char *filename = argv[1];
     FILE *fptr = fopen(filename, "rb");
 
     if (fptr == NULL) {
