@@ -10,7 +10,7 @@ uint16_t PC = 0;
 int16_t MEMORY[UINT16_MAX];
 
 // ROM (for instructions - separate from memory)
-uint16_t ROM[UINT16_MAX] = {};
+uint16_t ROM[UINT16_MAX];
 
 // Checks if a specific bit is present
 char bit_check(uint16_t val, char bit) {
@@ -18,6 +18,19 @@ char bit_check(uint16_t val, char bit) {
 }
 
 int main() {
+
+    // Load ROM from file
+    char filename[] = "program";
+    FILE *fptr = fopen(filename, "rb");
+
+    if (fptr == NULL) {
+        fprintf(stderr, "File not found: %s\n", filename);
+        return 1;
+    }
+
+    fread(ROM, 2, UINT16_MAX, fptr);
+    fclose(fptr);
+
     while (PC < UINT16_MAX) {
         
         uint16_t instruction = ROM[PC];
@@ -112,5 +125,15 @@ int main() {
             PC++;
         }
     }
-    printf("D: %hd (%#06x)\nA: %hd (%#06x)\n", D, D, A, A);
+
+    printf("\n D: %hd (%#06x)\n A: %hd (%#06x)\n*A: %hd (%#06x)\n", D, D, A, A, MEMORY[A], MEMORY[A]);
+    printf("\nROM:\n");
+    for (int i = 0; i < UINT16_MAX; i++) {
+        if (ROM[i] == 0) {
+            break;
+        }
+        printf("%3d: %#06x\n", i, ROM[i]);
+    }
+    printf("\n");
+    return 0;
 }
