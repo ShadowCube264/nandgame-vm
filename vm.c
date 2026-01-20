@@ -112,5 +112,5 @@ int main() {
             PC++;
         }
     }
-    printf("D: %d\nA: %d\n", D, A);
+    printf("D: %hd (%#06x)\nA: %hd (%#06x)\n", D, D, A, A);
 }
